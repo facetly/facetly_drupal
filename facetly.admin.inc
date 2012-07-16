@@ -30,18 +30,6 @@ function facetly_admin_template_settings_form($form_state)
     $form['facetly_tpl']           = array(
         '#tree' => TRUE
     );
-    /*
-    $form['facetly_tpl']['page']   = array(
-        '#type' => 'textarea',
-        '#title' => t('Page Template'),
-        '#default_value' => $facetly_template['page'],
-        '#rows' => 20
-    );
-	$form['facetly_tpl']['header'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Header Template'),
-    '#default_value' => $facetly_template['header'],
-    );*/
     $form['facetly_tpl']['search'] = array(
         '#type' => 'textarea',
         '#title' => t('Search Template'),
@@ -54,12 +42,8 @@ function facetly_admin_template_settings_form($form_state)
         '#default_value' => $facetly_template['facet'],
         '#rows' => 20
     );
-    /*$form['facetly_tpl']['footer'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Footer Template'),
-    '#default_value' => $facetly_template['footer'],
-    );*/
-    $form['submit']                = array(
+    
+    $form['submit'] = array(
         '#type' => 'submit',
         '#value' => t('Save')
     );
@@ -79,9 +63,7 @@ function facetly_admin_template_settings_form_validate($form, &$form_state){
    
     if (trim($error) != "Template Saved" ) {
         if ( strstr($error, 'Search Template') && strstr($error, 'Facet Template') ) {
-            //drupal_set_message(t("Template Saasdasved."), 'status', TRUE);
             form_set_error('facetly_tpl',t($error));
-            //form_set_error('facetly_tpl][facet',t(''));
         } else if ( strstr($error, 'Search Template') ) {
             form_set_error('facetly_tpl][search',t($error));
         } else if ( strstr($error, 'Facet Template') ) {
@@ -98,16 +80,6 @@ function facetly_admin_template_settings_form_submit($form, &$form_state)
     $facetly_template = variable_get('facetly_tpl', array());
     $values           = $form_state['values'];
     variable_set('facetly_tpl', $values['facetly_tpl']);
-    
-    /*$output = $facetly->templateUpdate($values['facetly_tpl']['search'], $values['facetly_tpl']['facet']);    
-        
-    if ( trim($output) != "Template Saved" ) {
-        drupal_set_message(t("!output", array(
-            '!output' => $output
-        )), 'error', TRUE);
-    } else {
-        drupal_set_message(t("Template Saved."), 'status', TRUE);
-    }*/
 }
 
 function facetly_admin_settings_form($form_state)
@@ -222,7 +194,6 @@ function facetly_admin_field_settings_form($form_state)
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_sell_price' : $facetly_field_key[$fieldname])
             );
@@ -230,7 +201,6 @@ function facetly_admin_field_settings_form($form_state)
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_body' : $facetly_field_key[$fieldname])
             );
@@ -238,25 +208,14 @@ function facetly_admin_field_settings_form($form_state)
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_title' : $facetly_field_key[$fieldname])
             );
         }
-        /*		else if($fieldname=='category') {
-        $form['facetly_field_key'][$fieldname] = array(
-        '#type' => 'select',
-        '#title' => $fieldname,
-        '#disabled' => TRUE,
-        '#options' => $options,
-        '#default_value' => 'category',
-        );
-        } */
         else if ($fieldname == 'created') {
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_created' : $facetly_field_key[$fieldname])
             );
@@ -264,7 +223,6 @@ function facetly_admin_field_settings_form($form_state)
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_url' : $facetly_field_key[$fieldname])
             );
@@ -272,7 +230,6 @@ function facetly_admin_field_settings_form($form_state)
             $form['facetly_field_key'][$fieldname] = array(
                 '#type' => 'select',
                 '#title' => $txtfieldname,
-                //'#disabled' => TRUE,
                 '#options' => $options,
                 '#default_value' => $facetly_field_key[$fieldname]
             );

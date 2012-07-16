@@ -1,0 +1,26 @@
+.item-list ul.facetly_result {
+  list-style-type: none;
+}
+.item-list ul.facetly_result li {
+  float: left;
+  list-style-type: none;
+  background: none;
+}
+
+
+#facetly_result ul.facetly_result li {
+  float: left;
+  list-style-type: none;
+  background: none;
+}
+
+#facetly_facet ul.facetly_facet li {
+  list-style-type: none;
+  background: none;
+}
+
+#facetly_result ul.pager li {
+  float: left;
+  list-style-type: none;
+  background: none;
+}

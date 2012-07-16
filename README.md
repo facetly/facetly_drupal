@@ -10,6 +10,7 @@ How to install Facetly Module in Drupal
 1. Before Installing Facetly Module, make sure you already have these requirements:
     
     a. Any FTP program, such as WinSCP, FileZilla, etc.
+   
     b. Activated Wordpress E-Commerce Module.
 
 2. Download Facetly Module from our site (https://github.com/facetly/facetly_drupal) and upload it to your module folder using FTP program. Activate Facetly Module in your modules list.

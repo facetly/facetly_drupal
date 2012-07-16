@@ -1,6 +1,5 @@
 <?php
 	function facetly_batch() {
-		//$limit = db_result(db_query('SELECT COUNT(DISTINCT nid) FROM {node}'));
 		$node_type = variable_get('facetly_node_type', array());
 	  	$operations = array();
 	  	foreach ($node_type as $key => $value) {
@@ -22,7 +21,7 @@
 
 	function facetly_batch_finished($success, $results, $operations) {
 		if ($success) {
-				$message = count($results) . ' processed.';
+		    $message = count($results) . ' processed.';
 		}
 		else {
 			$error_operation = reset($operations);

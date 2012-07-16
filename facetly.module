@@ -1,200 +1,195 @@
 <?php
 
-function facetly_perm()
-{
+function facetly_perm() {
     return array(
-        'administer facetly search'
+        'administer facetly search' 
     );
 }
 
-function facetly_menu()
-{
-    $items['admin/settings/facetly']          = array(
+function facetly_menu() {
+    $items['admin/settings/facetly'] = array(
         'title' => 'Facetly Configuration',
         'description' => 'Facetly Configuration',
         'page arguments' => array(
-            'facetly_admin_settings_form'
+             'facetly_admin_settings_form' 
         ),
         'page callback' => 'drupal_get_form',
         'access arguments' => array(
-            'administer facetly search'
+             'administer facetly search' 
         ),
         'type' => MENU_NORMAL_ITEM,
-        'file' => 'facetly.admin.inc',
+        'file' => 'facetly.admin.inc' 
     );
     $items['admin/settings/facetly/consumer'] = array(
         'title' => 'Facetly Configuration',
         'description' => 'Facetly Configuration',
         'page arguments' => array(
-            'facetly_admin_settings_form'
+             'facetly_admin_settings_form' 
         ),
         'page callback' => 'drupal_get_form',
         'access arguments' => array(
-            'administer facetly search'
+             'administer facetly search' 
         ),
         'type' => MENU_DEFAULT_LOCAL_TASK,
         'weight' => 0,
-        'file' => 'facetly.admin.inc',
+        'file' => 'facetly.admin.inc' 
     );
-    $items['admin/settings/facetly/field']    = array(
+    $items['admin/settings/facetly/field'] = array(
         'title' => 'Field',
         'description' => 'Facetly Field Configuration',
         'page arguments' => array(
-            'facetly_admin_field_settings_form'
+             'facetly_admin_field_settings_form' 
         ),
         'page callback' => 'drupal_get_form',
         'access arguments' => array(
-            'administer facetly search'
+             'administer facetly search' 
         ),
         'type' => MENU_LOCAL_TASK,
         'weight' => 1,
-        'file' => 'facetly.admin.inc',
+        'file' => 'facetly.admin.inc' 
     );
-    $items['admin/settings/facetly/reindex']  = array(
+    $items['admin/settings/facetly/reindex'] = array(
         'title' => 'Reindex',
         'description' => 'Facetly Reindex',
         'page arguments' => array(
-            'facetly_admin_reindex_form'
+             'facetly_admin_reindex_form' 
         ),
         'page callback' => 'drupal_get_form',
         'access arguments' => array(
-            'administer facetly search'
+             'administer facetly search' 
         ),
         'type' => MENU_LOCAL_TASK,
         'weight' => 3,
-        'file' => 'facetly.admin.inc',
+        'file' => 'facetly.admin.inc' 
     );
     $items['admin/settings/facetly/template'] = array(
         'title' => 'Template',
         'description' => 'Facetly Template',
         'page arguments' => array(
-            'facetly_admin_template_settings_form'
+             'facetly_admin_template_settings_form' 
         ),
         'page callback' => 'drupal_get_form',
         'access arguments' => array(
-            'administer facetly search'
+             'administer facetly search' 
         ),
         'type' => MENU_LOCAL_TASK,
         'weight' => 2,
-        'file' => 'facetly.admin.inc',
+        'file' => 'facetly.admin.inc' 
     );
-    $items['find']                            = array(
+    $items['find'] = array(
         'title' => 'Search',
         'description' => 'Facetly Search Page',
         'page callback' => 'facetly_search_template_page',
         'access arguments' => array(
-            'access content'
+             'access content' 
         ),
         'type' => MENU_CALLBACK,
-        'file' => 'facetly.pages.inc',
+        'file' => 'facetly.pages.inc' 
     );
-    $items['ajax/find/general/autocomplete']  = array(
+    $items['ajax/find/general/autocomplete'] = array(
         'title' => 'Facetly Json Autocomplete Search',
         'description' => 'Facetly Autocomplete Search ',
         'page callback' => 'facetly_autocomplete_search_page',
         'access arguments' => array(
-            'access content'
+             'access content' 
         ),
         'type' => MENU_CALLBACK,
-        'file' => 'facetly.pages.inc',
+        'file' => 'facetly.pages.inc' 
     );
     return $items;
 }
 
-function facetly_theme()
-{
+function facetly_theme() {
     return array(
         'facetly_pager' => array(
             'arguments' => array(
-                'results' => NULL,
-                'limit' => NULL
+                 'results' => NULL,
+                'limit' => NULL 
             ),
-            'file' => 'facetly.theme.inc',
+            'file' => 'facetly.theme.inc' 
 
         ),
         'facetly_search_form' => array(
-            'arguments' => array(
-                'form' => NULL
+             'arguments' => array(
+                 'form' => NULL 
             ),
-            'file' => 'facetly.theme.inc',
+            'file' => 'facetly.theme.inc' 
         ),
         'facetly_item' => array(
-            'arguments' => array(
-                'items' => NULL
+             'arguments' => array(
+                 'items' => NULL 
             ),
-            'file' => 'facetly.theme.inc',
+            'file' => 'facetly.theme.inc' 
         ),
         'facetly_item_list' => array(
-            'arguments' => array(
-                'items' => NULL,
+             'arguments' => array(
+                 'items' => NULL,
                 'title' => NULL,
                 'type' => NULL,
-                'attributes' => NULL
+                'attributes' => NULL 
             ),
-            'file' => 'facetly.theme.inc',
-        )
+            'file' => 'facetly.theme.inc' 
+        ) 
     );
 }
 
 
 
 
-function facetly_add_js()
-{
+function facetly_add_js() {
     static $run;
-    
-    if (!$run) {
+
+    if ( !$run ) {
         global $base_url;
-                
-        drupal_add_js(drupal_get_path('module', 'facetly') . '/js/jquery.address.js');
-        drupal_add_js(drupal_get_path('module', 'facetly') . '/js/jquery.autocomplete.js');
-        drupal_add_js(drupal_get_path('module', 'facetly') . '/js/facetly.js');
-        
-        
+
+        drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/jquery.address.js' );
+        drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/jquery.autocomplete.js' );
+        drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/facetly.js' );
+
+
         $settings = array(
             'facetly_state' => $base_url,
-            'facetly_baseurl' => url("find", array(
-                'query' => variable_get('facetly_extra_vars', ''),
-            )),
-            'facetly_server' => variable_get('facetly_server', ''),
-            'facetly_key' => variable_get('facetly_key', ''),
-            'facetly_limit' => variable_get('facetly_limit', 10)
+            'facetly_baseurl' => url( "find", array(
+                 'query' => variable_get( 'facetly_extra_vars', '' ) 
+            ) ),
+            'facetly_server' => variable_get( 'facetly_server', '' ),
+            'facetly_key' => variable_get( 'facetly_key', '' ),
+            'facetly_limit' => variable_get( 'facetly_limit', 10 ) 
         );
-        drupal_add_js($settings, 'setting');
+        drupal_add_js( $settings, 'setting' );
         $run = TRUE;
     }
 }
 
 
-function facetly_block($op = 'list', $delta = 0, $edit = array())
-{
-    if ($op == 'list') {
-        $blocks['facetly_search']  = array(
-            'info' => t('Facetly: Search Form'),
-            'weight' => 0
+function facetly_block( $op = 'list', $delta = 0, $edit = array() ) {
+    if ( $op == 'list' ) {
+        $blocks['facetly_search'] = array(
+            'info' => t( 'Facetly: Search Form' ),
+            'weight' => 0 
         );
         $blocks['facetly_faceted'] = array(
-            'info' => t('Facetly: Filter Results'),
-            'weight' => 0
+            'info' => t( 'Facetly: Filter Results' ),
+            'weight' => 0 
         );
         return $blocks;
-    } else if ($op == 'view') {
-        module_load_include('inc','facetly','facetly.common');
-        switch ($delta) {
+    } else if ( $op == 'view' ) {
+        module_load_include( 'inc', 'facetly', 'facetly.common' );
+        switch ( $delta ) {
             case 'facetly_search':
                 // Your module will need to define this function to render the block.
                 $block = array(
-                    'subject' => t('Search'),
-                    'content' => drupal_get_form('facetly_search_form', array(
-                        'title' => FALSE
-                    ))
+                    'subject' => t( 'Search' ),
+                    'content' => drupal_get_form( 'facetly_search_form', array(
+                        'title' => FALSE 
+                    ) ) 
                 );
                 break;
             case 'facetly_faceted':
                 // Your module will need to define this function to render the block.
                 $block = array(
-                    'subject' => t('Filter Results'),
-                    'content' => facetly_faceted_search()
+                    'subject' => t( 'Filter Results' ),
+                    'content' => facetly_faceted_search() 
                 );
                 break;
         }
@@ -202,44 +197,43 @@ function facetly_block($op = 'list', $delta = 0, $edit = array())
     }
 }
 
-function facetly_nodeapi(&$node, $op)
-{
-    switch ($op) {
+function facetly_nodeapi( &$node, $op ) {
+    switch ( $op ) {
         case 'insert':
         case 'update':
-            if ($node->status == 1) {
-              module_load_include('inc','facetly','facetly.common');
-              facetly_reindex($node);
+            if ( $node->status == 1 ) {
+                module_load_include( 'inc', 'facetly', 'facetly.common' );
+                facetly_reindex( $node );
             } else {
-              $facetly = facetly_api_init();
-              try {
-                $facetly->productDelete($node->nid);                        
-              } catch (Exception $e) {
-                drupal_set_message(t($e->getMessage()), 'error', TRUE);
-              }
+                $facetly = facetly_api_init();
+                try {
+                    $facetly->productDelete( $node->nid );
+                }
+                catch ( Exception $e ) {
+                    drupal_set_message( t( $e->getMessage() ), 'error', TRUE );
+                }
             }
             break;
         case 'delete':
             $facetly = facetly_api_init();
             try {
-                $facetly->productDelete($node->nid);     
-            } catch (Exception $e) {
-                drupal_set_message(t($e->getMessage()), 'error', TRUE);
-            }                   
+                $facetly->productDelete( $node->nid );
+            }
+            catch ( Exception $e ) {
+                drupal_set_message( t( $e->getMessage() ), 'error', TRUE );
+            }
             break;
     }
 }
 
 function facetly_api_init() {
     static $facetly;
-    
-    if (empty($facetly)) {  
-      module_load_include('php', 'facetly', 'facetly_api');
-      $facetly = new facetly_api();
-      $facetly->setServer(variable_get('facetly_server', ''));
-      $facetly->setConsumer(variable_get('facetly_key', ''), variable_get('facetly_secret', ''));
+
+    if ( empty( $facetly ) ) {
+        module_load_include( 'php', 'facetly', 'facetly_api' );
+        $facetly = new facetly_api();
+        $facetly->setServer( variable_get( 'facetly_server', '' ) );
+        $facetly->setConsumer( variable_get( 'facetly_key', '' ), variable_get( 'facetly_secret', '' ) );
     }
     return $facetly;
 }
-
-

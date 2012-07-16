@@ -17,6 +17,7 @@ How to install Facetly Module in Drupal
 
 3. After Facetly Module successfully installed in your Drupal, you will find Facetly Configuration in your Admin Menu and contain submenus: Facetly Settings, Fields, Reindex, and Template
 
+
 Configure Facetly Module
 
 Now we are going to configure Facetly Module. There are several steps that you are need to do:

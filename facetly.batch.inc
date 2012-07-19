@@ -22,18 +22,28 @@
 	function facetly_batch_finished($success, $results, $operations) {
 		if ($success) {
 		    $message = count($results) . ' processed.';
+			drupal_set_message($message);
 		}
 		else {
 			$error_operation = reset($operations);
-			$message = 'An error occurred while processing ' . $error_operation[0] . ' with arguments :' . print_r($error_operation[0], TRUE);
+			$message = $_SESSION['facetly_reindex'];
+			unset($_SESSION['facetly_reindex']);
+			drupal_set_message($message, 'error', TRUE);
 		}
-		drupal_set_message($message);
 	}	
 	
 	function facetly_batch_node_operation($nid, &$context) {		
 		module_load_include('inc','facetly','facetly.common');
 		$node = node_load($nid);
-		facetly_reindex($node);
+		try {		
+			facetly_reindex($node);
+		} catch (Exception $e) {
+		   $message = $e->getMessage();
+		}
+		if ($message != "") {
+			$_SESSION['facetly_reindex'] = $message;
+			break;
+		}
 		// Store some result for post-processing in the finished callback.
 		$context['results'][] = $node->nid . ' : ' . check_plain($node->title);
 

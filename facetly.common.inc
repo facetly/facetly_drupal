@@ -92,12 +92,7 @@ function facetly_reindex( $node ) {
     $items['price'] = ( ( is_numeric( $items['price'] ) ) ? $items['price'] : (int) $items['price'] );
 
     $facetly = facetly_api_init();
-    try {
-        $facetly->productUpdate( $items );
-    }
-    catch ( Exception $e ) {
-        drupal_set_message( t( $e->getMessage() ), 'error', TRUE );
-    }
+    $facetly->productUpdate( $items );
 }
 
 function facetly_search_result( $query, $filter, $searchtype ) {

@@ -202,8 +202,12 @@ function facetly_nodeapi( &$node, $op ) {
         case 'insert':
         case 'update':
             if ( $node->status == 1 ) {
-                module_load_include( 'inc', 'facetly', 'facetly.common' );
-                facetly_reindex( $node );
+                module_load_include('inc','facetly','facetly.common');
+                try {
+                    facetly_reindex($node);
+                } catch (Exception $e) {
+                    drupal_set_message(t($e->getMessage()), 'error', TRUE);
+                }
             } else {
                 $facetly = facetly_api_init();
                 try {

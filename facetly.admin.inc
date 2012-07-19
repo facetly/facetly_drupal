@@ -12,7 +12,6 @@ function facetly_admin_reindex_form_submit( $form, &$form_state ) {
     module_load_include( 'inc', 'facetly', 'facetly.batch' );
     $facetly = facetly_api_init();
     $facetly->productTruncate();
-    $node_type = $form_state['values']['node_type'];
 
     $function = 'facetly_batch';
     $batch = $function();

@@ -22,10 +22,16 @@ function facetly_admin_reindex_form_submit( $form, &$form_state ) {
 }
 
 function facetly_admin_template_settings_form( $form_state ) {
-    $facetly_template = variable_get( 'facetly_tpl', array ());
+    $facetly_template = variable_get( 'facetly_tpl', array () );
     $form['facetly_tpl'] = array(
         '#tree' => TRUE 
     );
+    if ( $facetly_template['search'] == '' && $facetly_template['facet'] == '' ) {
+        $facetly = facetly_api_init();
+        $template = $facetly->templateSelect();
+        $facetly_template['search'] = $template->tplsearch;
+        $facetly_template['facet'] = $template->tplfacet;
+    }
     $form['facetly_tpl']['search'] = array(
         '#type' => 'textarea',
         '#title' => t( 'Search Template' ),
@@ -82,18 +88,21 @@ function facetly_admin_settings_form( $form_state ) {
     $form['facetly_key'] = array(
         '#type' => 'textfield',
         '#title' => t( 'Consumer Key' ),
-        '#default_value' => variable_get( 'facetly_key', '' ) 
+        '#default_value' => variable_get( 'facetly_key', '' ),
+        '#description' => t( 'ex: qhduafdh' ),
     );
     $form['facetly_secret'] = array(
         '#type' => 'textfield',
         '#title' => t( 'Consumer Secret' ),
-        '#default_value' => variable_get( 'facetly_secret', '' ) 
+        '#default_value' => variable_get( 'facetly_secret', '' ),
+        '#description' => t( 'ex: q5yvmddqntukobeoszi6zuqmwvy9wwsv' ),
     );
 
     $form['facetly_server'] = array(
         '#type' => 'textfield',
         '#title' => t( 'Server Name' ),
-        '#default_value' => variable_get( 'facetly_server', '' ) 
+        '#default_value' => variable_get( 'facetly_server', '' ),
+        '#description' => t( 'ex: http://sg1.facetly.com/1' ), 
     );
     $form['facetly_extra'] = array(
         '#type' => 'fieldset',
@@ -104,12 +113,14 @@ function facetly_admin_settings_form( $form_state ) {
     $form['facetly_extra']['facetly_limit'] = array(
         '#type' => 'textfield',
         '#title' => t( 'Search Limit Setting' ),
-        '#default_value' => variable_get( 'facetly_limit', '10' ) 
+        '#default_value' => variable_get( 'facetly_limit', '10' ),
+        '#description' => t( 'ex: 5' ),
     );
     $form['facetly_extra']['facetly_extra_vars'] = array(
         '#type' => 'textfield',
         '#title' => t( 'Additional Variable' ),
-        '#default_value' => variable_get( 'facetly_extra_vars', '' ) 
+        '#default_value' => variable_get( 'facetly_extra_vars', '' ),
+        '#description' => t( 'ex:_op[category]=or' ),
     );
 
     return system_settings_form( $form );

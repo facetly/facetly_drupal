@@ -1,10 +1,16 @@
 Drupal.behaviors.facetly = function() {
+  var isfacetlypage = false;
+  
+  if (jQuery('#facetly_facet').length && jQuery('#facetly_result').length) {
+    isfacetlypage = true;
+  }  
+  
   jQuery('input[facetly="on"]').each(function(index, elm) {
     var input = jQuery(this);
     var autosubmit = true;    
     var nocache = false;
     var gmap;       
-    var isctrl = false;
+    var isctrl = false;    
     
     var delay = (function(){
       var timer = 0;
@@ -12,27 +18,29 @@ Drupal.behaviors.facetly = function() {
         clearTimeout (timer);
         timer = setTimeout(callback, ms);
       };
-    })();
+    })();    
 
-    jQuery(input).keydown(function(e) {   
-      var keycode = e.which; 
-      if (keycode >= 17 && keycode <= 18) {
-        isctrl = true;
-      }
-      if (isctrl == false && !(keycode == 0 || keycode == 8 || keycode == 9 || keycode == 13 || (keycode >= 16 && keycode <= 20) || keycode == 27 || (keycode >= 33 && keycode <= 46) || (keycode >= 91 && keycode <= 93) || (keycode >= 112 && keycode <= 123) || (keycode >= 144 && keycode <= 145))) {
-        jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
-      }
-    });
+    if (isfacetlypage) {
+      jQuery(input).keydown(function(e) {   
+        var keycode = e.which; 
+        if (keycode >= 17 && keycode <= 18) {
+          isctrl = true;
+        }
+        if (isctrl == false && !(keycode == 0 || keycode == 8 || keycode == 9 || keycode == 13 || (keycode >= 16 && keycode <= 20) || keycode == 27 || (keycode >= 33 && keycode <= 46) || (keycode >= 91 && keycode <= 93) || (keycode >= 112 && keycode <= 123) || (keycode >= 144 && keycode <= 145))) {
+          jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
+        }
+      });
                                              
-    jQuery(input).keyup(function(e) {   
-      var keycode = e.which; 
-      if (keycode >= 17 && keycode <= 18) {
-        isctrl = false;
-      }
-      delay(function() {      
-        jQuery(input).trigger('submit');
-      }, 300);
-    });
+      jQuery(input).keyup(function(e) {   
+        var keycode = e.which; 
+        if (keycode >= 17 && keycode <= 18) {
+          isctrl = false;
+        }
+        delay(function() {      
+          jQuery(input).trigger('submit');
+        }, 300);
+      });
+    }
         
     var serviceUrl= Drupal.settings.facetly_server+'/search/autocomplete';
     var params={
@@ -62,14 +70,14 @@ Drupal.behaviors.facetly = function() {
     };	
     
     
-    if (jQuery('.pager a, #facetly_facet a')) {
+    if (isfacetlypage) {
     jQuery.address.state(Drupal.settings.facetly_state).init(function() {
         // Initializes the plugin
-        jQuery('.pager a, #facetly_facet a, form[facetly_form="on"]').address();
+        jQuery('#facetly_result .pager a, #facetly_facet a, form[facetly_form="on"]').address();
         
     }).change(function(event) {
         // Selects the proper navigation link
-        jQuery('.pager a').each(function() {
+        jQuery('#facetly_result .pager a').each(function() {
             if (jQuery(this).attr('href') == (jQuery.address.state() + event.path)) {
                 jQuery(this).parent().addClass('pager-current').focus();
             } else {

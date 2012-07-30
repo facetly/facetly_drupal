@@ -1,28 +1,10 @@
-Drupal.behaviors.sphinx_autocomplete = function() {
+Drupal.behaviors.facetly = function() {
   jQuery('input[facetly="on"]').each(function(index, elm) {
     var input = jQuery(this);
     var autosubmit = true;    
     var nocache = false;
-    var gmap;
-    /*if (input.attr('autosubmit') == 'no') {
-      autosubmit = false;
-    } else {
-      autosubmit = true;
-    }
-    
-    if (input.attr('nocache') == 'yes') {
-      nocache = true;
-    } else {
-      nocache = false;
-    }
-    
-    if (input.attr('gmap') == 'yes') {
-      gmap = true;
-    } else {
-      gmap = false;
-    } */
-    
-    //var xhr;          
+    var gmap;       
+    var isctrl = false;
     
     var delay = (function(){
       var timer = 0;
@@ -32,30 +14,23 @@ Drupal.behaviors.sphinx_autocomplete = function() {
       };
     })();
 
+    jQuery(input).keydown(function(e) {   
+      var keycode = e.which; 
+      if (keycode >= 17 && keycode <= 18) {
+        isctrl = true;
+      }
+      if (isctrl == false && !(keycode == 8 || keycode == 9 || keycode == 13 || (keycode >= 16 && keycode <= 20) || keycode == 27 || (keycode >= 33 && keycode <= 46) || (keycode >= 91 && keycode <= 93) || (keycode >= 112 && keycode <= 123) || (keycode >= 144 && keycode <= 145))) {
+        jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
+      }
+    });
                                              
-    jQuery(input).keyup(function() {   
+    jQuery(input).keyup(function(e) {   
+      var keycode = e.which; 
+      if (keycode >= 17 && keycode <= 18) {
+        isctrl = false;
+      }
       delay(function() {      
-        params = {};
-        facetly_server = Drupal.settings.facetly_server;
-        params.key = Drupal.settings.facetly_key;
-        params.baseurl = Drupal.settings.facetly_baseurl;
-        params.searchtype = "html";
-        params.limit = Drupal.settings.facetly_limit;          
-        if (jQuery(input).val() != "") {
-          params.query = jQuery(input).val();
-        }
-        
-        jQuery.ajax({
-          url: facetly_server + "/search/product",
-          dataType: "jsonp",
-          type: "GET",
-          data : params,
-          success: function(data) {		
-            jQuery('#facetly_result').html(data.results);
-            jQuery('#facetly_facet').html(data.facets);
-            jQuery(document).trigger("facetly_loaded");
-          }
-        });
+        jQuery(input).trigger('submit');
       }, 300);
     });
         
@@ -74,15 +49,11 @@ Drupal.behaviors.sphinx_autocomplete = function() {
   });
   
 
-
-
-
     var init = true, 
         state = window.history.pushState !== undefined;
     
     // Handles response
     var handler = function(data) {
-       // jQuery('title').html(jQuery('title', 'test test').html());
         jQuery('#facetly_result').html(data.results);
         jQuery('#facetly_result').show();
         jQuery('#facetly_facet').html(data.facets);
@@ -94,7 +65,7 @@ Drupal.behaviors.sphinx_autocomplete = function() {
     if (jQuery('.pager a, #facetly_facet a')) {
     jQuery.address.state(Drupal.settings.facetly_state).init(function() {
         // Initializes the plugin
-        jQuery('.pager a, #facetly_facet a').address();
+        jQuery('.pager a, #facetly_facet a, form[facetly_form="on"]').address();
         
     }).change(function(event) {
         // Selects the proper navigation link
@@ -112,7 +83,7 @@ Drupal.behaviors.sphinx_autocomplete = function() {
             jQuery(document).trigger("facetly_loaded");
         
         } else {
-                    
+                                                
            params = {};
            // fix bug [], replace %5B AND %5D
            for (var i = 0; i < event.parameterNames.length; i++) {

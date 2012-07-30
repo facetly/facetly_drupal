@@ -152,9 +152,8 @@ function facetly_search_form( $form_state, $vars = array( 'title' => TRUE ) ) {
         '#type' => 'hidden',
         '#value' => variable_get( 'facetly_limit', '10' ) 
     );
-    $form['#action'] = url( 'find', array(
-        'query' => variable_get( 'facetly_extra_vars', '' ) 
-    ) );
+    $form['#attributes'] = array('facetly_form' => 'on');
+    $form['#action'] = url('find');
     $form['#method'] = 'GET';
     return $form;
 }

@@ -19,7 +19,7 @@ Drupal.behaviors.facetly = function() {
       if (keycode >= 17 && keycode <= 18) {
         isctrl = true;
       }
-      if (isctrl == false && !(keycode == 8 || keycode == 9 || keycode == 13 || (keycode >= 16 && keycode <= 20) || keycode == 27 || (keycode >= 33 && keycode <= 46) || (keycode >= 91 && keycode <= 93) || (keycode >= 112 && keycode <= 123) || (keycode >= 144 && keycode <= 145))) {
+      if (isctrl == false && !(keycode == 0 || keycode == 8 || keycode == 9 || keycode == 13 || (keycode >= 16 && keycode <= 20) || keycode == 27 || (keycode >= 33 && keycode <= 46) || (keycode >= 91 && keycode <= 93) || (keycode >= 112 && keycode <= 123) || (keycode >= 144 && keycode <= 145))) {
         jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
       }
     });

@@ -296,9 +296,8 @@ function facetly_search_form($form_state, $vars = array('title' => TRUE))
 			}			
 		//} 
 		
-		if (!empty($output)) {
-		  $output = '<div id="facetly_facet">'. $output.'</div>';				
-		}
+		$output = '<div id="facetly_facet">'. $output.'</div>';				
+		
 		return $output;
 	//}
 	}	

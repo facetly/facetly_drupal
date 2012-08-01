@@ -70,6 +70,7 @@ Drupal.behaviors.facetly = function() {
           
         } 
         jQuery('#facetly_result').fadeTo("fast",1.0);
+        jQuery('html, body').animate({ scrollTop: 0 }, "fast");
         jQuery(document).trigger("facetly_loaded");       
     };	
     
@@ -85,7 +86,6 @@ Drupal.behaviors.facetly = function() {
         jQuery('#facetly_result .pager a, #facetly_facet a, form[facetly_form="on"]').address();
         
     }).change(function(event) {
-        console.log(event);
         // Selects the proper navigation link
         jQuery('#facetly_result .pager a').each(function() {
             if (jQuery(this).attr('href') == (jQuery.address.state() + event.path)) {

@@ -217,5 +217,4 @@ class facetly_api
         $this->output = $output;
         return $this->output;
     }
-}
-
+} 

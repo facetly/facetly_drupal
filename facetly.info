@@ -1,5 +1,5 @@
 name = Facetly Search
-description = Facetly Search Module
+description = Facetly Search Custom Module
 package = Facetly
 version = VERSION
 core = 6.x

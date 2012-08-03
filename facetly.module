@@ -2,13 +2,13 @@
 
 function facetly_perm() {
     return array(
-        'administer facetly search' 
+         'administer facetly search' 
     );
 }
 
 function facetly_menu() {
-    $items['admin/settings/facetly'] = array(
-        'title' => 'Facetly Configuration',
+    $items['admin/settings/facetly']          = array(
+         'title' => 'Facetly Configuration',
         'description' => 'Facetly Configuration',
         'page arguments' => array(
              'facetly_admin_settings_form' 
@@ -21,7 +21,7 @@ function facetly_menu() {
         'file' => 'facetly.admin.inc' 
     );
     $items['admin/settings/facetly/consumer'] = array(
-        'title' => 'Facetly Configuration',
+         'title' => 'Facetly Configuration',
         'description' => 'Facetly Configuration',
         'page arguments' => array(
              'facetly_admin_settings_form' 
@@ -34,8 +34,8 @@ function facetly_menu() {
         'weight' => 0,
         'file' => 'facetly.admin.inc' 
     );
-    $items['admin/settings/facetly/field'] = array(
-        'title' => 'Field',
+    $items['admin/settings/facetly/field']    = array(
+         'title' => 'Field',
         'description' => 'Facetly Field Configuration',
         'page arguments' => array(
              'facetly_admin_field_settings_form' 
@@ -48,8 +48,8 @@ function facetly_menu() {
         'weight' => 1,
         'file' => 'facetly.admin.inc' 
     );
-    $items['admin/settings/facetly/reindex'] = array(
-        'title' => 'Reindex',
+    $items['admin/settings/facetly/reindex']  = array(
+         'title' => 'Reindex',
         'description' => 'Facetly Reindex',
         'page arguments' => array(
              'facetly_admin_reindex_form' 
@@ -63,7 +63,7 @@ function facetly_menu() {
         'file' => 'facetly.admin.inc' 
     );
     $items['admin/settings/facetly/template'] = array(
-        'title' => 'Template',
+         'title' => 'Template',
         'description' => 'Facetly Template',
         'page arguments' => array(
              'facetly_admin_template_settings_form' 
@@ -76,8 +76,8 @@ function facetly_menu() {
         'weight' => 2,
         'file' => 'facetly.admin.inc' 
     );
-    $items['find'] = array(
-        'title' => 'Search',
+    $items['find']                            = array(
+         'title' => 'Search',
         'description' => 'Facetly Search Page',
         'page callback' => 'facetly_search_template_page',
         'access arguments' => array(
@@ -86,8 +86,8 @@ function facetly_menu() {
         'type' => MENU_CALLBACK,
         'file' => 'facetly.pages.inc' 
     );
-    $items['ajax/find/general/autocomplete'] = array(
-        'title' => 'Facetly Json Autocomplete Search',
+    $items['ajax/find/general/autocomplete']  = array(
+         'title' => 'Facetly Json Autocomplete Search',
         'description' => 'Facetly Autocomplete Search ',
         'page callback' => 'facetly_autocomplete_search_page',
         'access arguments' => array(
@@ -101,13 +101,13 @@ function facetly_menu() {
 
 function facetly_theme() {
     return array(
-        'facetly_pager' => array(
-            'arguments' => array(
+         'facetly_pager' => array(
+             'arguments' => array(
                  'results' => NULL,
                 'limit' => NULL 
             ),
             'file' => 'facetly.theme.inc' 
-
+            
         ),
         'facetly_search_form' => array(
              'arguments' => array(
@@ -138,17 +138,17 @@ function facetly_theme() {
 
 function facetly_add_js() {
     static $run;
-
+    
     if ( !$run ) {
         global $base_url;
-
+        
         drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/jquery.address.js' );
         drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/jquery.autocomplete.js' );
         drupal_add_js( drupal_get_path( 'module', 'facetly' ) . '/js/facetly.js' );
-
-
+        
+        
         $settings = array(
-            'facetly_state' => $base_url,
+             'facetly_state' => $base_url,
             'facetly_baseurl' => url( "find", array(
                  'query' => variable_get( 'facetly_extra_vars', '' ) 
             ) ),
@@ -164,12 +164,12 @@ function facetly_add_js() {
 
 function facetly_block( $op = 'list', $delta = 0, $edit = array() ) {
     if ( $op == 'list' ) {
-        $blocks['facetly_search'] = array(
-            'info' => t( 'Facetly: Search Form' ),
+        $blocks['facetly_search']  = array(
+             'info' => t( 'Facetly: Search Form' ),
             'weight' => 0 
         );
         $blocks['facetly_faceted'] = array(
-            'info' => t( 'Facetly: Filter Results' ),
+             'info' => t( 'Facetly: Filter Results' ),
             'weight' => 0 
         );
         return $blocks;
@@ -179,16 +179,16 @@ function facetly_block( $op = 'list', $delta = 0, $edit = array() ) {
             case 'facetly_search':
                 // Your module will need to define this function to render the block.
                 $block = array(
-                    'subject' => t( 'Search' ),
+                     'subject' => t( 'Search' ),
                     'content' => drupal_get_form( 'facetly_search_form', array(
-                        'title' => FALSE 
+                         'title' => FALSE 
                     ) ) 
                 );
                 break;
             case 'facetly_faceted':
                 // Your module will need to define this function to render the block.
                 $block = array(
-                    'subject' => t( 'Filter Results' ),
+                     'subject' => t( 'Filter Results' ),
                     'content' => facetly_faceted_search() 
                 );
                 break;
@@ -202,11 +202,12 @@ function facetly_nodeapi( &$node, $op ) {
         case 'insert':
         case 'update':
             if ( $node->status == 1 ) {
-                module_load_include('inc','facetly','facetly.common');
+                module_load_include( 'inc', 'facetly', 'facetly.common' );
                 try {
-                    facetly_reindex($node);
-                } catch (Exception $e) {
-                    drupal_set_message(t($e->getMessage()), 'error', TRUE);
+                    facetly_reindex( $node );
+                }
+                catch ( Exception $e ) {
+                    drupal_set_message( t( $e->getMessage() ), 'error', TRUE );
                 }
             } else {
                 $facetly = facetly_api_init();
@@ -232,7 +233,7 @@ function facetly_nodeapi( &$node, $op ) {
 
 function facetly_api_init() {
     static $facetly;
-
+    
     if ( empty( $facetly ) ) {
         module_load_include( 'php', 'facetly', 'facetly_api' );
         $facetly = new facetly_api();

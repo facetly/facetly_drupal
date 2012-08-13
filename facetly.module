@@ -235,16 +235,16 @@ function facetly_nodeapi(&$node, $op)
     }
 }
 
-function facetly_api_init() {
+function facetly_api_init($async = FALSE) {
     static $facetly;
     
-    if (empty($facetly)) {  
+    if (empty($facetly[$async])) {  
       module_load_include('php', 'facetly', 'facetly_api');
-      $facetly = new facetly_api();
-      $facetly->setServer(variable_get('facetly_server', ''));
-      $facetly->setConsumer(variable_get('facetly_key', ''), variable_get('facetly_secret', ''));
+      $facetly[$async] = new facetly_api();
+      $facetly[$async]->setServer(variable_get('facetly_server', ''), $async);
+      $facetly[$async]->setConsumer(variable_get('facetly_key', ''), variable_get('facetly_secret', ''));
     }
-    return $facetly;
+    return $facetly[$async];
 }
 
 

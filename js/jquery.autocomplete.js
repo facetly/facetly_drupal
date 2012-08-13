@@ -301,7 +301,8 @@ var options, a;
       this.container.hide().empty();
       for (i = 0; i < len; i++) {
         s = this.suggestions[i];
-        div = jQuery((me.selectedIndex === i ? '<div class="selected"' : '<div') + ' title="' + s + '">' + f(s, this.data[i], v) + '</div>');
+        vtrim = jQuery.trim(v);
+        div = jQuery((me.selectedIndex === i ? '<div class="selected"' : '<div') + ' title="' + s + '">' + f(s, this.data[i], vtrim) + '</div>');
         div.mouseover(mOver(i));
         div.click(mClick(i));
         this.container.append(div);
@@ -441,3 +442,4 @@ var options, a;
   };
 
 }(jQuery));
+

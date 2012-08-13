@@ -1,6 +1,5 @@
 <?php
 	function facetly_batch() {
-		//$limit = db_result(db_query('SELECT COUNT(DISTINCT nid) FROM {node}'));
 		$node_type = variable_get('facetly_node_type', array());
 	  	$operations = array();
 	  	foreach ($node_type as $key => $value) {
@@ -15,7 +14,6 @@
 			'operations' => $operations, 
 			'finished' => 'facetly_batch_finished',
 			'file' => drupal_get_path('module','facetly')  . '/facetly.batch.inc',
-			//'error_message' => t('Example Batch has encountered an errorfasjojasojoajso.'),
 		);
 		
 		return $batch;
@@ -28,8 +26,6 @@
 		}
 		else {
 			$error_operation = reset($operations);
-			//$message = 'An erfsadror occurredddd whilfasfase processing ' . $error_operation[0] . ' with arguments :' . print_r($error_operation[0], TRUE);
-			//$message = t($results['error']);
 			$message = $_SESSION['facetly_reindex'];
 			unset($_SESSION['facetly_reindex']);
 			drupal_set_message($message, 'error', TRUE);
@@ -39,8 +35,6 @@
 	function facetly_batch_node_operation($nid, &$context) {		
 		module_load_include('inc','facetly','facetly.common');
 		$node = node_load($nid);
-		//facetly_reindex($node);
-		//$node = $results['node'];
 		try {		
 			facetly_reindex($node, TRUE);
 		} catch (Exception $e) {
@@ -49,7 +43,6 @@
 		if ($message != "") {
 			$_SESSION['facetly_reindex'] = $message;
 			break;
-			//$context['results']['error'] = $message;
 		}
 		// Store some result for post-processing in the finished callback.
 		$context['results'][] = $node->nid . ' : ' . check_plain($node->title);

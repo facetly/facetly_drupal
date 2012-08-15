@@ -9,7 +9,7 @@ Drupal.behaviors.facetly = function() {
     var input = jQuery(this);
     var autosubmit = true;    
     var nocache = false;
-    var gmap;      
+    var gmap;       
     var isctrl = false;    
     
     var delay = (function(){
@@ -21,7 +21,7 @@ Drupal.behaviors.facetly = function() {
     })();    
 
     if (isfacetlypage) {
-      jQuery(input).keydown(function(e) {  
+      jQuery(input).keydown(function(e) {   
         var keycode = e.which; 
         if (keycode >= 17 && keycode <= 18) {
           isctrl = true;
@@ -30,8 +30,8 @@ Drupal.behaviors.facetly = function() {
           facetly_loading();
         }
       });
-                                            
-      jQuery(input).keyup(function(e) {  
+                                             
+      jQuery(input).keyup(function(e) {   
         var keycode = e.which; 
         if (keycode >= 17 && keycode <= 18) {
           isctrl = false;
@@ -70,11 +70,13 @@ Drupal.behaviors.facetly = function() {
           
         } 
         jQuery('#facetly_result').fadeTo("fast",1.0);
+        //jQuery('html, body').animate({ scrollTop: jQuery('#facetly_result').offset().top }, "fast");
         jQuery('html, body').animate({ scrollTop: 0 }, "fast");
-        jQuery(document).trigger("facetly_loaded");      
-    };    
+        jQuery(document).trigger("facetly_loaded");       
+    };	
     
     var facetly_loading = function(data) {
+      //jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
       jQuery('#facetly_result').fadeTo("fast",0.5);
     }
     
@@ -106,29 +108,30 @@ Drupal.behaviors.facetly = function() {
            for (var i = 0; i < event.parameterNames.length; i++) {
              var key = event.parameterNames[i];
              var newkey = decodeURIComponent(key);
-             if (typeof event.parameters[key] == "string") {                
-                 params[newkey] = decodeURIComponent(event.parameters[key]).replace(/\+/g, ' ');
+             if (typeof event.parameters[key] == "string") {             	
+             	params[newkey] = decodeURIComponent(event.parameters[key]).replace(/\+/g, ' ');
              } else {
-                 var values = [];
-                 var value_temp = event.parameters[key];
-                 for (var j = 0; j < value_temp.length; j++) {                    
-                     values[j] = decodeURIComponent(value_temp[j]).replace(/\+/g, ' ');
-                 }
-                 params[newkey] = values;
+             	var values = [];
+             	var value_temp = event.parameters[key];
+             	for (var j = 0; j < value_temp.length; j++) {             		
+             		values[j] = decodeURIComponent(value_temp[j]).replace(/\+/g, ' ');
+             	}
+             	params[newkey] = values;
+                 //console.log();
              }
            }
            facetly_server = Drupal.settings.facetly_server;
            params["key"] = Drupal.settings.facetly_key;
            params["baseurl"] = Drupal.settings.facetly_baseurl;
            params["searchtype"] = "html";
-          
+           
            facetly_loading();
            jQuery.ajax({
              url: facetly_server + "/search/product",
              dataType: "jsonp",
              type: "GET",
              data : params,
-             success: function(data, textStatus, XMLHttpRequest) {        
+             success: function(data, textStatus, XMLHttpRequest) {		
               facetly_handler(data);
               jQuery(document).trigger("facetly_loaded");
              }
@@ -137,4 +140,5 @@ Drupal.behaviors.facetly = function() {
 
     });
     } 
-}    
+}	
+

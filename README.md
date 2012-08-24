@@ -16,7 +16,7 @@ How to install Facetly Module in Drupal
 
 	d. Latest version of jQuery Update, please download this module here (http://drupal.org/project/jquery_update)
 
-2. Download Facetly Module from our site (https://github.com/facetly/facetly_drupal) and upload it to your module folder using FTP program. Activate Facetly Module in your modules list.
+2. Download Facetly Module from our site (https://github.com/facetly/facetly_drupal) and upload it to your module folder using FTP program. Activate Facetly Module and jQuery Update in your modules list.
 
 3. After Facetly Module successfully installed in your Drupal, you will find Facetly Configuration in your Admin Menu and contain submenus: Facetly Settings, Fields, Reindex, and Template
 

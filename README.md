@@ -1,9 +1,8 @@
-facetly_drupal
+Facetly Drupal
 ==============
 
-Facetly Drupal Modules
-
 Install Facetly Module
+----------------------
 
 How to install Facetly Module in Drupal
 
@@ -24,6 +23,7 @@ How to install Facetly Module in Drupal
 
 
 Configure Facetly Module
+------------------------
 
 Now we are going to configure Facetly Module. There are several steps that you are need to do:
 

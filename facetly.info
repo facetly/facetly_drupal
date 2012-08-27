@@ -1,5 +1,10 @@
 name = Facetly Search
 description = Facetly Search Custom Module
+<<<<<<< HEAD
+=======
+dependencies[] = uc_product
+dependencies[] = jquery_update
+>>>>>>> update drupal
 package = Facetly
 version = VERSION
 core = 6.x

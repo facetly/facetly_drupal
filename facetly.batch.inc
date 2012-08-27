@@ -44,10 +44,7 @@
 			$_SESSION['facetly_reindex'] = $message;
 			break;
 		}
-		// Store some result for post-processing in the finished callback.
 		$context['results'][] = $node->nid . ' : ' . check_plain($node->title);
-
-		// Optional message displayed under the progressbar.
 		$context['message'] = t('Loading @title', array('@title' => $node->title));
 	}
 	

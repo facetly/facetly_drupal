@@ -9,7 +9,7 @@ Drupal.behaviors.facetly = function() {
   
   jQuery('input[facetly="on"]').each(function(index, elm) {
     var input = jQuery(this);
-    var autosubmit = true;    
+    var autosubmit = !isfacetlypage;
     var nocache = false;
     var gmap;
     var isctrl = false;      
@@ -61,11 +61,7 @@ Drupal.behaviors.facetly = function() {
     var init = true, 
     state = window.history.pushState !== undefined;
     
-<<<<<<< HEAD
-    // Handles response    
-=======
     // Handles response
->>>>>>> update drupal
     var facetly_handler = function(data) {              
         jQuery('#facetly_result').html(data.results);
         jQuery('#facetly_result').show();
@@ -75,22 +71,9 @@ Drupal.behaviors.facetly = function() {
           
         } 
         jQuery('#facetly_result').fadeTo("fast",1.0);
-<<<<<<< HEAD
-        //jQuery('html, body').animate({ scrollTop: jQuery('#facetly_result').offset().top }, "fast");
-        jQuery('html, body').animate({ scrollTop: 0 }, "fast");
-        jQuery(document).trigger("facetly_loaded");       
-    };	
-    
-    var facetly_loading = function(data) {
-      //jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
-      jQuery('#facetly_result').fadeTo("fast",0.5);
-    }
-    
-=======
         jQuery('html, body').animate({ scrollTop: 0 }, "fast");
         jQuery(document).trigger("facetly_loaded");       
     };
->>>>>>> update drupal
     
     var facetly_loading = function(data) {
       //jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
@@ -129,23 +112,6 @@ Drupal.behaviors.facetly = function() {
              if (typeof event.parameters[key] == "string") {              
               params[newkey] = decodeURIComponent(event.parameters[key]).replace(/\+/g, ' ');
              } else {
-<<<<<<< HEAD
-             	var values = [];
-             	var value_temp = event.parameters[key];
-             	for (var j = 0; j < value_temp.length; j++) {             		
-             		values[j] = decodeURIComponent(value_temp[j]).replace(/\+/g, ' ');
-             	}
-             	params[newkey] = values;
-                 //console.log();
-             }
-           }
-           facetly_server = Drupal.settings.facetly_server;
-           params["key"] = Drupal.settings.facetly_key;
-           params["baseurl"] = Drupal.settings.facetly_baseurl;
-           params["searchtype"] = "html";
-           
-           facetly_loading();
-=======
               var values = [];
               var value_temp = event.parameters[key];
               for (var j = 0; j < value_temp.length; j++) {                 
@@ -161,17 +127,12 @@ Drupal.behaviors.facetly = function() {
            params["searchtype"] = "html";
            
            facetly_loading();        
->>>>>>> update drupal
            jQuery.ajax({
              url: facetly_server + "/search/product",
              dataType: "jsonp",
              type: "GET",
              data : params,
-<<<<<<< HEAD
-             success: function(data, textStatus, XMLHttpRequest) {		
-=======
              success: function(data, textStatus, XMLHttpRequest) {    
->>>>>>> update drupal
               facetly_handler(data);
               jQuery(document).trigger("facetly_loaded");
              }

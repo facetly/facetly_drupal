@@ -59,7 +59,6 @@ function theme_facetly_item_list($items = array(), $title = NULL, $type = 'ul', 
 	  $output = theme('pager');
 	  return $output;
 	}
-<<<<<<< HEAD
 
 	function theme_facetly_item($items) {
 		static $facetly_field_image;
@@ -93,12 +92,6 @@ function theme_facetly_item_list($items = array(), $title = NULL, $type = 'ul', 
 
 function theme_facetly_search_form($form)
 {
-    static $counter;
-    
-    if (!isset($counter)) {
-        $counter = 0;
-    }
-    
     facetly_add_js();
     drupal_add_css(drupal_get_path('module', 'facetly') . '/css/autocomplete.css');
 
@@ -106,49 +99,5 @@ function theme_facetly_search_form($form)
     unset($form['form_token']);
     unset($form['form_id']);
     $output = drupal_render($form);
-    $counter++;
     return $output;
 }
-=======
-
-	function theme_facetly_item($items) {
-		static $facetly_field_image;
-		$items_title = $items['title'];
-		$items_body = $items['body'];
-		$context = array(
-			'revision' => 'themed', 
-			'type' => 'product',
-			'class' => array('product', 'sell_price'),
-		);
-		
-		$items_price = uc_price($items['price'], $context);
-		$output = "";
-
-		if( empty($facetly_field_image) ){
-			$facetly_field_key = variable_get('facetly_field_key', array());	
-			foreach ( $facetly_field_key as $field_key => &$field_value ) {
-				if( strpos($field_value, 'image') ) {
-					$facetly_field_image = $field_key;				
-				}
-			}	
-		}
-		$image_path = $items[$facetly_field_image];
-		$output .= theme('imagecache', 'product', $image_path, "", "");
-		$items_id = $items['id'];
-		$output .= "<br/>". l($items_title, 'node/'. $id = $items_id). "<br/>";	
-		$output .= "". $items_body ."<br/>";
-		$output .= "". $items_price ."<br/>";
-		return $output; 
-	}
-
-	function theme_facetly_search_form($form) {
-	    facetly_add_js();
-	    drupal_add_css(drupal_get_path('module', 'facetly') . '/css/autocomplete.css');
-
-	    unset($form['form_build_id']);
-	    unset($form['form_token']);
-	    unset($form['form_id']);
-	    $output = drupal_render($form);
-	    return $output;
-	}
->>>>>>> update drupal

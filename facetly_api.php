@@ -1,15 +1,12 @@
 <?php
 
-class facetly_api
-{
-    function setConsumer($key, $secret)
-    {
+class facetly_api {
+    function setConsumer($key, $secret) {
         $this->key    = $key;
         $this->secret = $secret;
     }
     
-    function setServer($server, $async = FALSE)
-    {
+    function setServer($server, $async = FALSE) {
         $this->server = $server;
         $this->async = $async;
     }
@@ -18,8 +15,7 @@ class facetly_api
         $this->baseurl = $baseurl;
     }
     
-    function templateUpdate($tplsearch, $tplfacet, $tplpage = '')
-    {
+    function templateUpdate($tplsearch, $tplfacet, $tplpage = '') {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -29,14 +25,11 @@ class facetly_api
             "tplfacet" => $tplfacet,
             "tplpage" => $tplpage
         );
-        //print_r($data);
-        //exit();
         $path   = "template/update";
         return $this->call($path, $data, 'POST');
     }
     
-    function templateSelect()
-    {
+    function templateSelect() {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -47,8 +40,7 @@ class facetly_api
         return json_decode($this->call($path, $data, 'POST'));
     }
     
-    function productDelete($id)
-    {
+    function productDelete($id) {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -60,8 +52,7 @@ class facetly_api
         return $this->call($path, $data, 'POST');
     }
     
-    function productTruncate()
-    {
+    function productTruncate() {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -72,8 +63,7 @@ class facetly_api
         return $this->call($path, $data, 'POST');
     }
     
-    function productUpdate($items)
-    {
+    function productUpdate($items) {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -85,8 +75,7 @@ class facetly_api
         return $this->call($path, $data, 'POST');
     }
     
-    function searchProduct($query, $filter, $searchtype)
-    {
+    function searchProduct($query, $filter, $searchtype) {
         $baseurl = $this->baseurl;
         $key     = $this->key;
         $data    = array(
@@ -104,8 +93,7 @@ class facetly_api
         return json_decode($this->call($path, $data, 'GET'));
     }
     
-    function searchHtml($query, $filter)
-    {
+    function searchHtml($query, $filter) {
         $baseurl = $this->baseurl;
         $key     = $this->key;
         $data    = array(
@@ -122,8 +110,7 @@ class facetly_api
         return $this->call($path, $data, 'GET');
     }
     
-    function searchAutoComplete($query)
-    {
+    function searchAutoComplete($query) {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -136,8 +123,7 @@ class facetly_api
         return json_decode($this->call($path, $data, 'GET'));
     }
     
-    function reportQuery($from, $to, $query = "")
-    {
+    function reportQuery($from, $to, $query = "") {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -151,8 +137,7 @@ class facetly_api
         return json_decode($this->call($path, $data, 'POST'));
     }
     
-    function reportTrend($from, $to, $query = "", $field = "keywords_token")
-    {
+    function reportTrend($from, $to, $query = "", $field = "keywords_token") {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -168,14 +153,12 @@ class facetly_api
         return json_decode($this->call($path, $data, 'POST'));
     }
     
-    function reportStats()
-    {
+    function reportStats() {
         $path = "report/stats";
         return json_decode($this->call($path, "", 'POST'));
     }
     
-    function fieldSelect()
-    {
+    function fieldSelect() {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
@@ -186,8 +169,7 @@ class facetly_api
         return json_decode($this->call($path, $data, 'POST'));
     }
     
-    function call($path, $data, $method)
-    {
+    function call($path, $data, $method) {
         if (!$this->key || !$this->secret || !$this->server) throw new Exception('Empty Consumer Configuration');               
             $data = http_build_query($data, '', '&');
         //replace multiple values [0]..[n] to [], thanks to http://www.php.net/manual/en/function.http-build-query.php#78603
@@ -227,8 +209,7 @@ class facetly_api
     }
 
     // curl async, thanks to http://petewarden.typepad.com/searchbrowser/2008/06/how-to-post-an.html
-    function curl_post_async($url, $post_string)
-    {    
+    function curl_post_async($url, $post_string) {    
         $parts=parse_url($url);
 
         $fp = fsockopen($parts['host'], 

@@ -27,11 +27,12 @@
         module_load_include('inc','facetly', 'facetly.batch');
         $facetly = facetly_api_init();
         $facetly->productTruncate();
-       
+        
         $function = 'facetly_batch';
         $batch    = $function();
         batch_set($batch);
         
+        // Redirection takes place as usual.
         $form_state['redirect'] = 'admin/settings/facetly/reindex';
     }
 
@@ -50,8 +51,8 @@
             );
             return $form;
         } else {   
-            $facetly_template              = variable_get('facetly_tpl', array());
-            $form['facetly_tpl']           = array(
+            $facetly_template = variable_get('facetly_tpl', array());
+            $form['facetly_tpl'] = array(
                 '#tree' => TRUE
             );
             if ($facetly_template['search'] == '' && $facetly_template['facet'] == '') {
@@ -60,19 +61,21 @@
                 $facetly_template['search'] = $template->tplsearch;
                 $facetly_template['facet'] = $template->tplfacet;
            }
+            
             $form['facetly_tpl']['search'] = array(
                 '#type' => 'textarea',
                 '#title' => t('Search Template'),
                 '#default_value' => $facetly_template['search'],
                 '#rows' => 20
             );
-            $form['facetly_tpl']['facet']  = array(
+            $form['facetly_tpl']['facet'] = array(
                 '#type' => 'textarea',
                 '#title' => t('Facet Template'),
                 '#default_value' => $facetly_template['facet'],
                 '#rows' => 20
             );
-            $form['submit']                = array(
+            
+            $form['submit'] = array(
                 '#type' => 'submit',
                 '#value' => t('Save')
             );
@@ -92,9 +95,7 @@
         
         if (trim($error) != "Template Saved" ) {
             if ( strstr($error, 'Search Template') && strstr($error, 'Facet Template') ) {
-                //drupal_set_message(t("Template Saasdasved."), 'status', TRUE);
                 form_set_error('facetly_tpl',t($error));
-                //form_set_error('facetly_tpl][facet',t(''));
             } else if ( strstr($error, 'Search Template') ) {
                 form_set_error('facetly_tpl][search',t($error));
             } else if ( strstr($error, 'Facet Template') ) {
@@ -211,25 +212,24 @@
             $field = $fields->field;
             
             $preset = module_invoke_all('imagecache_default_presets');
-            
             $facetly_field_key = variable_get('facetly_field_key', array());
             
             if (module_exists('content')) {
-            $query_cck = db_query("SELECT * FROM {content_node_field}");
-              while ($cck = db_fetch_object($query_cck)) {
-                $imagefield = db_result(db_query("SELECT widget_type FROM {content_node_field_instance} WHERE widget_module='imagefield' AND field_name='%s'", $cck->field_name));
-                if ($imagefield) {
-                    $query_imagecache = db_query("SELECT presetname FROM {imagecache_preset} ORDER BY presetname");
-                    while ($imagecache = db_fetch_object($query_imagecache)) {
-                        $options[$cck->field_name . ':' . $imagecache->presetname] = 'CCK ' . $cck->field_name . ':' . $imagecache->presetname;
+                $query_cck = db_query("SELECT * FROM {content_node_field}");
+                while ($cck = db_fetch_object($query_cck)) {
+                    $imagefield = db_result(db_query("SELECT widget_type FROM {content_node_field_instance} WHERE widget_module='imagefield' AND field_name='%s'", $cck->field_name));
+                    if ($imagefield) {
+                        $query_imagecache = db_query("SELECT presetname FROM {imagecache_preset} ORDER BY presetname");
+                        while ($imagecache = db_fetch_object($query_imagecache)) {
+                            $options[$cck->field_name . ':' . $imagecache->presetname] = 'CCK ' . $cck->field_name . ':' . $imagecache->presetname;
+                        }
+                        foreach ($preset as $pkey => $pval) {
+                            $options[$cck->field_name . ':' . $pkey] = 'CCK ' . $cck->field_name . ':' . $pval["presetname"];
+                        }
+                    } else {
+                        $options[$cck->field_name] = 'CCK ' . $cck->field_name;
                     }
-                    foreach ($preset as $pkey => $pval) {
-                        $options[$cck->field_name . ':' . $pkey] = 'CCK ' . $cck->field_name . ':' . $pval["presetname"];
-                    }
-                } else {
-                    $options[$cck->field_name] = 'CCK ' . $cck->field_name;
                 }
-              }
             }
             
             $query_vocabulary = db_query("SELECT * FROM {vocabulary}");
@@ -244,11 +244,11 @@
             $options['node_url']        = 'Node url';
             $options['node_sell_price'] = 'Node price';
             if (module_exists('locale')) {
-              $options['node_language_id'] = 'Node language:ID';
-              $options['node_language_native'] = 'Node language:Native';
+                $options['node_language_id'] = 'Node language:ID';
+                $options['node_language_native'] = 'Node language:Native';
             }
-            $type_text                  = array();
-            $type_numeric               = array();
+            $type_text = array();
+            $type_numeric = array();
             asort($options);
             
             $form['facetly_field_key'] = array();
@@ -287,7 +287,7 @@
                     $form['facetly_field_key'][$fieldname] = array(
                         '#type' => 'select',
                         '#title' => $txtfieldname,
-                       '#options' => $options,
+                        '#options' => $options,
                         '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_title' : $facetly_field_key[$fieldname])
                     );
                 }
@@ -295,7 +295,7 @@
                     $form['facetly_field_key'][$fieldname] = array(
                         '#type' => 'select',
                         '#title' => $txtfieldname,
-                       '#options' => $options,
+                        '#options' => $options,
                         '#default_value' => ((empty($facetly_field_key[$fieldname])) ? 'node_created' : $facetly_field_key[$fieldname])
                     );
                 } else if ($fieldname == 'language') {

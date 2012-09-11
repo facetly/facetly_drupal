@@ -17,6 +17,8 @@ How to install Facetly Module in Drupal
 	d. Latest version of jQuery Update, please download this module here (http://drupal.org/project/jquery_update)
 
 	e. Enabled clean urls, please follow this guide (http://drupal.org/getting-started/clean-urls)
+	
+	f. Enable curl in php, please follow our guide here (https://www.facetly.com/doc/howto/curl)
 
 2. Download Facetly Module from our site (https://github.com/facetly/facetly_drupal) and rename module folder into facetly then upload it to drupal >> sites >> all >> module using FTP program. 
 

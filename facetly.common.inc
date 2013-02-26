@@ -9,7 +9,6 @@
         
         $languages = language_list();
             
-        //if (module_exists('cck')) {
         foreach ($facetly_field_key as $key => $value) {
             $deletekey = FALSE;
             if (strpos($value, 'node_') !== FALSE) {
@@ -85,10 +84,9 @@
                 unset($facetly_field_key[$key]);
             }
         }
-        //}
         
         
-        // assumption: all existing key on facetly field key are vocabulary			
+        // assumption: all existing key on facetly field key are vocabulary         
         
         foreach ($facetly_field_key as $key => $value) {
             if (!empty($node->taxonomy)) {
@@ -109,40 +107,39 @@
             }
         }
         
-        $items['created'] = $items['created'] * 1000;
+        $items['created'] = $items['created'];
         $items['price']   = ((is_numeric($items['price'])) ? $items['price'] : (int) $items['price']);
         
         $facetly = facetly_api_init($async);
-        $facetly->productUpdate($items);                  
+        $facetly->productInsert($items);                  
     }
 
 
 
 
     function facetly_search_result($query, $filter, $searchtype){
-    	static $var;
-    	if (empty($var)){
-    		$facetly = facetly_api_init();		  
-    		
-    		$url = url("find", array('query' => variable_get('facetly_extra_vars', '')));		
-            $post = array(						
-    			//"limit" => 3,					
-    			"baseurl" => $url,
-    		);
-    	
-    		if (!empty($query)) {
-    		    $post['query'] = $query;
-    		}
-    		
-    		$post = array_merge($post, $filter);
+        static $var;
+        if (empty($var)){
+            $facetly = facetly_api_init();        
+            
+            $url = url("find", array('query' => variable_get('facetly_extra_vars', '')));       
+            $post = array(                      
+                "baseurl" => $url,
+            );
+        
+            if (!empty($query)) {
+                $post['query'] = $query;
+            }
+            
+            $post = array_merge($post, $filter);
             try {
                 $var = $facetly->searchProduct($query, $post, $searchtype);       
             } catch (Exception $e) {
                 $var = new stdClass();
                 $var->results = $e->getMessage();
             }
-    	}
-    	return $var;
+        }
+        return $var;
 
     }
 
@@ -187,7 +184,7 @@
                     case 'node_language_id':
                         $lang = $language->language;
                         break;
-                }	  		  
+                }             
             } else {
                 $lang = $_GET['language'];
             }
@@ -195,7 +192,7 @@
                 '#type' => 'hidden',
                 '#value' => $lang,
             );
-        }	
+        }   
        
         $x = base_path();
         if (!empty($x)) {
@@ -214,43 +211,43 @@
         return $form;
     }
 
-	function facetly_history_result($query){
-		$facetly = facetly_api_init();
-		$var = $facetly->searchAutoComplete($query);
-		return $var;
-	} 
+    function facetly_history_result($query){
+        $facetly = facetly_api_init();
+        $var = $facetly->searchAutoComplete($query);
+        return $var;
+    } 
 
 
-	function facetly_faceted_search(){
-		$url = explode('?', $_SERVER['REQUEST_URI']);
-		$get = array();   
-		
-		if (empty($url[1])) {
-		  $url[1] = '';
-		}
-		
-		$query = "";
-		$output = "";
-		parse_str($url[1], $get);
-		if ( empty($get['limit']) ) $get['limit'] = variable_get('facetly_limit', '');
-	  	
-		if ( !empty($_GET['query']) ) {
-			$query = $_GET['query'];
-		}
-	
-		$filter = $get; 
-		unset($filter['query']);
-	
-		$category = "";
-		$price = "";
-		
-		$searchtype = "html";	
-		$var = facetly_search_result($query,$filter, $searchtype);			
-		if ( !empty($var) ) {
-			$output = $var->facets;
-		} 
-		
-		$output = '<div id="facetly_facet">'. $output.'</div>';				
-		return $output;
-	}	
+    function facetly_faceted_search(){
+        $url = explode('?', $_SERVER['REQUEST_URI']);
+        $get = array();   
+        
+        if (empty($url[1])) {
+          $url[1] = '';
+        }
+        
+        $query = "";
+        $output = "";
+        parse_str($url[1], $get);
+        if ( empty($get['limit']) ) $get['limit'] = variable_get('facetly_limit', '');
+        
+        if ( !empty($_GET['query']) ) {
+            $query = $_GET['query'];
+        }
+    
+        $filter = $get; 
+        unset($filter['query']);
+    
+        $category = "";
+        $price = "";
+        
+        $searchtype = "html";   
+        $var = facetly_search_result($query,$filter, $searchtype);          
+        if ( !empty($var) ) {
+            $output = $var->facets;
+        } 
+        
+        $output = '<div id="facetly_facet">'. $output.'</div>';             
+        return $output;
+    }   
 

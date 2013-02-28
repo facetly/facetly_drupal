@@ -100,10 +100,14 @@
         } catch (Exception $e) {
             $message = json_decode($e->getMessage());
             if ($message->status == 'error') {
+
                 $err_message = (is_string($message->message)) ? $message->message : '' ;
                 $tplsearch_err = $message->message->tplsearch;
                 $tplfacet_err = $message->message->tplfacet;
-                if (!empty($tplsearch_err) && !empty($tplfacet_err)) {
+
+                if (!empty($err_message)) {
+                    form_set_error('facetly_tpl', t($err_message));
+                } else if (!empty($tplsearch_err) && !empty($tplfacet_err)) {
                     form_set_error('facetly_tpl',t($tplsearch_err. '<br/>'. $tplfacet_err));
                 } else if (!empty($tplsearch_err)) {
                     form_set_error('facetly_tpl][search',t($tplsearch_err));

@@ -53,15 +53,16 @@
 	}
 
 	function facetly_autocomplete_search_page() {
-	    module_load_include('inc','facetly','facetly.common');
 	    $matches = array();
-	    $string  = $_GET['query'];
+	    $query = $_GET['query'];
 	    
 	    $limit = 10;
-	    if (!empty($string)) {
+	    if (!empty($query)) {
 	        $suggestions = array();
-	        $filter      = array();
-	        $var         = facetly_history_result($string);	
+	        $filter = array();
+
+	        $facetly = facetly_api_init();
+        	$var = $facetly->searchAutoComplete($query);
 	        if (!empty($var)) {
 	            $item = $var->suggestions;
 	            foreach ($item as $key => $value) {
@@ -71,7 +72,7 @@
 	    }
 	    
 	    $matches = array(
-	        'query' => $string,
+	        'query' => $query,
 	        'suggestions' => $suggestions
 	    );
 	    drupal_json($matches);

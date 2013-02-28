@@ -1,6 +1,5 @@
 name = Facetly Search
 description = Facetly Search Custom Module
-dependencies[] = uc_product
 dependencies[] = jquery_update
 package = Facetly
 version = VERSION

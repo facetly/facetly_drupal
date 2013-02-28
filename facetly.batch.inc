@@ -15,7 +15,6 @@
 			'finished' => 'facetly_batch_finished',
 			'file' => drupal_get_path('module','facetly')  . '/facetly.batch.inc',
 		);
-		
 		return $batch;
 	}
 

@@ -1,14 +1,11 @@
 <?php
 
-    function facetly_reindex($node, $async = FALSE) {    
-        
+    function facetly_reindex($node, $async = FALSE) {     
         $productId = $node->nid;
         $facetly_field_key = variable_get('facetly_field_key', array());
             
         $items = array();    
-        
-        $languages = language_list();
-            
+        $languages = language_list(); 
         foreach ($facetly_field_key as $key => $value) {
             $deletekey = FALSE;
             if (strpos($value, 'node_') !== FALSE) {
@@ -52,7 +49,7 @@
                 static $widget_module;
                 
                 list($value, $additional) = explode(":", $value);
-                
+    
                 if (empty($widget_type[$node->type][$value])) {
                     $widget_module[$node->type][$value] = db_result(db_query("SELECT widget_module FROM {content_node_field_instance} WHERE type_name='%s' AND field_name='%s'", $node->type, $value));
                 }
@@ -85,9 +82,7 @@
             }
         }
         
-        
-        // assumption: all existing key on facetly field key are vocabulary         
-        
+        // assumption: all existing key on facetly field key are vocabulary            
         foreach ($facetly_field_key as $key => $value) {
             if (!empty($node->taxonomy)) {
                 foreach ($node->taxonomy as $key2 => $value2) {
@@ -106,18 +101,14 @@
                 }
             }
         }
-        
         $items['created'] = $items['created'];
         $items['price']   = ((is_numeric($items['price'])) ? $items['price'] : (int) $items['price']);
         
         $facetly = facetly_api_init($async);
-        $facetly->productInsert($items);                  
+        $facetly->productInsert($items);                      
     }
 
-
-
-
-    function facetly_search_result($query, $filter, $searchtype){
+    function facetly_search_result($query, $filter, $searchtype) {
         static $var;
         if (empty($var)){
             $facetly = facetly_api_init();        
@@ -135,17 +126,16 @@
             try {
                 $var = $facetly->searchProduct($query, $post, $searchtype);       
             } catch (Exception $e) {
+                $message = $e->getMessage();
                 $var = new stdClass();
-                $var->results = $e->getMessage();
+                $var->results = $message;
             }
         }
         return $var;
-
     }
 
 
-    function facetly_search_form($form_state, $vars = array('title' => TRUE))
-    {
+    function facetly_search_form($form_state, $vars = array('title' => TRUE)) {
         global $language;
         $query = "";
         if (!empty($_GET['query']))
@@ -211,14 +201,7 @@
         return $form;
     }
 
-    function facetly_history_result($query){
-        $facetly = facetly_api_init();
-        $var = $facetly->searchAutoComplete($query);
-        return $var;
-    } 
-
-
-    function facetly_faceted_search(){
+    function facetly_faceted_search() {
         $url = explode('?', $_SERVER['REQUEST_URI']);
         $get = array();   
         
@@ -250,4 +233,3 @@
         $output = '<div id="facetly_facet">'. $output.'</div>';             
         return $output;
     }   
-

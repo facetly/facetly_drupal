@@ -5,7 +5,8 @@
             $facetly = facetly_api_init();
             $fields = $facetly->fieldSelect();
         } catch (Exception $e) {
-            drupal_set_message(t($e->getMessage()), 'error', TRUE);
+            $message = $e->getMessage();
+            drupal_set_message(t($message), 'error', TRUE);
         }
 
         if (empty($fields)) {
@@ -26,14 +27,18 @@
     function facetly_admin_reindex_form_submit($form, &$form_state) {        
         module_load_include('inc','facetly', 'facetly.batch');
         $facetly = facetly_api_init();
-        $facetly->productTruncate();
-        
-        $function = 'facetly_batch';
-        $batch    = $function();
-        batch_set($batch);
-        
-        // Redirection takes place as usual.
-        $form_state['redirect'] = 'admin/settings/facetly/reindex';
+        try {
+            $facetly->productTruncate();
+            $function = 'facetly_batch';
+            $batch = $function();
+            batch_set($batch);
+            
+            // Redirection takes place as usual.
+            $form_state['redirect'] = 'admin/settings/facetly/reindex';
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            drupal_set_message(t($message), 'error', TRUE);
+        }   
     }
 
     function facetly_admin_template_settings_form($form_state) {
@@ -41,7 +46,8 @@
             $facetly = facetly_api_init();
             $fields = $facetly->fieldSelect();
         } catch (Exception $e) {
-            drupal_set_message(t($e->getMessage()), 'error', TRUE);
+            $message = $e->getMessage();
+            drupal_set_message(t($message), 'error', TRUE);
         }
 
         if (empty($fields)) {
@@ -86,30 +92,34 @@
     function facetly_admin_template_settings_form_validate($form, &$form_state) {
         $facetly = facetly_api_init();
         $values = $form_state['values'];
+        $tplsearch = $values['facetly_tpl']['search'];
+        $tplfacet = $values['facetly_tpl']['facet'];
 
         try {
-            $error = $facetly->templateUpdate($values['facetly_tpl']['search'], $values['facetly_tpl']['facet']);
+            $facetly->templateUpdate($tplsearch, $tplfacet);
         } catch (Exception $e) {
-            $error = $e->getMessage();
-        }
-        
-        if (trim($error) != "Template Saved" ) {
-            if ( strstr($error, 'Search Template') && strstr($error, 'Facet Template') ) {
-                form_set_error('facetly_tpl',t($error));
-            } else if ( strstr($error, 'Search Template') ) {
-                form_set_error('facetly_tpl][search',t($error));
-            } else if ( strstr($error, 'Facet Template') ) {
-                form_set_error('facetly_tpl][facet',t($error));
+            $message = json_decode($e->getMessage());
+            if ($message->status == 'error') {
+                $err_message = (is_string($message->message)) ? $message->message : '' ;
+                $tplsearch_err = $message->message->tplsearch;
+                $tplfacet_err = $message->message->tplfacet;
+                if (!empty($tplsearch_err) && !empty($tplfacet_err)) {
+                    form_set_error('facetly_tpl',t($tplsearch_err. '<br/>'. $tplfacet_err));
+                } else if (!empty($tplsearch_err)) {
+                    form_set_error('facetly_tpl][search',t($tplsearch_err));
+                } else if (!empty($tplfacet_err)) {
+                    form_set_error('facetly_tpl][facet',t($tplfacet_err));
+                } else {
+                    drupal_set_message(t("Template Saved."), 'status', TRUE);   
+                }
             }
-        } else {
-            drupal_set_message(t("Template Saved."), 'status', TRUE);   
         }
     }
 
     function facetly_admin_template_settings_form_submit($form, &$form_state) {
         $facetly = facetly_api_init();    
         $facetly_template = variable_get('facetly_tpl', array());
-        $values           = $form_state['values'];
+        $values = $form_state['values'];
         variable_set('facetly_tpl', $values['facetly_tpl']);
     }
 
@@ -120,7 +130,7 @@
             '#title' => t('Facetly API Configuration'),
             '#tree' => FALSE,
         );
-        $form['facetly_settings']['facetly_key']    = array(
+        $form['facetly_settings']['facetly_key'] = array(
             '#type' => 'textfield',
             '#title' => t('Consumer Key'),
             '#default_value' => variable_get('facetly_key', ''),
@@ -177,20 +187,20 @@
         }
 
         if (!empty($facetly_key) && !empty($facetly_secret) && !empty($facetly_server)) {
-          $fields = array();
-          try {
-            $facetly = new facetly_api();
-            $facetly->setServer($facetly_server);
-            $facetly->setConsumer($facetly_key, $facetly_secret);
-            $fields = $facetly->fieldSelect();
-          } catch (Exception $e) {
-            drupal_set_message(t($e->getMessage()), 'error', TRUE);   
-          }
+            $fields = array();
+            try {
+                $facetly = new facetly_api();
+                $facetly->setServer($facetly_server);
+                $facetly->setConsumer($facetly_key, $facetly_secret);
+                $fields = $facetly->fieldSelect();
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                drupal_set_message(t($message), 'error', TRUE);
+            }
         
-          if (empty($fields)) {
-            form_set_error('facetly_settings',t('Cannot connect to Facetly, please check your consumer API configuration or contact our support if problem persist.'));
-          }
-
+            if (empty($fields)) {
+                form_set_error('facetly_settings',t('Cannot connect to Facetly, please check your consumer API configuration or contact our support if problem persist.'));
+            }
         }
     }
 
@@ -199,7 +209,8 @@
             $facetly = facetly_api_init();
             $fields = $facetly->fieldSelect();
         } catch (Exception $e) {
-            drupal_set_message(t($e->getMessage()), 'error', TRUE);   
+            $message = $e->getMessage();
+            drupal_set_message(t($message), 'error', TRUE);
         }
 
         if (empty($fields)) {
@@ -236,12 +247,12 @@
             while ($vocabulary = db_fetch_object($query_vocabulary)) {
                 $options[$vocabulary->name] = 'Vocabulary ' . $vocabulary->name;
             }
-            $options['']                = '-- Not selected --';
-            $options['node_nid']        = 'Node nid';
-            $options['node_title']      = 'Node title';
-            $options['node_body']       = 'Node body';
-            $options['node_created']    = 'Node created';
-            $options['node_url']        = 'Node url';
+            $options[''] = '-- Not selected --';
+            $options['node_nid']  = 'Node nid';
+            $options['node_title'] = 'Node title';
+            $options['node_body'] = 'Node body';
+            $options['node_created'] = 'Node created';
+            $options['node_url'] = 'Node url';
             $options['node_sell_price'] = 'Node price';
             if (module_exists('locale')) {
                 $options['node_language_id'] = 'Node language:ID';
@@ -251,8 +262,7 @@
             $type_numeric = array();
             asort($options);
             
-            $form['facetly_field_key'] = array();
-            
+            $form['facetly_field_key'] = array(); 
             $form['facetly_field_key'] = array(
                 '#tree' => TRUE
             );
@@ -324,11 +334,11 @@
             ksort($form['facetly_field_key']);
             
             $query_type = db_query("SELECT name, type FROM {node_type} ORDER BY type ASC");
-            $check      = array();
+            $check = array();
             while ($get_type = db_fetch_object($query_type)) {
                 $check[$get_type->type] = t($get_type->name);
             }
-            $facetly_node_type         = variable_get('facetly_node_type', array());
+            $facetly_node_type = variable_get('facetly_node_type', array());
             $form['facetly_node_type'] = array(
                 '#type' => 'checkboxes',
                 '#title' => t('Node Type'),

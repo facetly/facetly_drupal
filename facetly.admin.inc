@@ -97,10 +97,10 @@
 
         try {
             $facetly->templateUpdate($tplsearch, $tplfacet);
+            drupal_set_message(t("Template Saved."), 'status', TRUE);
         } catch (Exception $e) {
             $message = json_decode($e->getMessage());
             if ($message->status == 'error') {
-
                 $err_message = (is_string($message->message)) ? $message->message : '' ;
                 $tplsearch_err = $message->message->tplsearch;
                 $tplfacet_err = $message->message->tplfacet;
@@ -113,9 +113,7 @@
                     form_set_error('facetly_tpl][search',t($tplsearch_err));
                 } else if (!empty($tplfacet_err)) {
                     form_set_error('facetly_tpl][facet',t($tplfacet_err));
-                } else {
-                    drupal_set_message(t("Template Saved."), 'status', TRUE);   
-                }
+                } 
             }
         }
     }

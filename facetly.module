@@ -1,5 +1,4 @@
 <?php
-
     function facetly_perm() {
         return array(
             'administer facetly search'
@@ -86,7 +85,7 @@
             'type' => MENU_CALLBACK,
             'file' => 'facetly.pages.inc',
         );
-        $items['ajax/find/general/autocomplete']  = array(
+        $items['ajax/find/general/autocomplete'] = array(
             'title' => 'Facetly Json Autocomplete Search',
             'description' => 'Facetly Autocomplete Search ',
             'page callback' => 'facetly_autocomplete_search_page',
@@ -99,7 +98,8 @@
         return $items;
     }
 
-    function facetly_theme() {
+    function facetly_theme()
+    {
         return array(
             'facetly_pager' => array(
                 'arguments' => array(

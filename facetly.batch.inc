@@ -15,6 +15,7 @@
 			'finished' => 'facetly_batch_finished',
 			'file' => drupal_get_path('module','facetly')  . '/facetly.batch.inc',
 		);
+		
 		return $batch;
 	}
 
@@ -35,9 +36,14 @@
 		module_load_include('inc','facetly','facetly.common');
 		$node = node_load($nid);
 		try {		
-			facetly_reindex($node, TRUE);
+			if (!empty($node->title)) {
+				facetly_reindex($node, FALSE);
+			} else {
+				node_delete($nid);
+			}
 		} catch (Exception $e) {
            $message = $e->getMessage();
+           $message .= ' => nid:'. $nid;
 		}
 		if ($message != "") {
 			$_SESSION['facetly_reindex'] = $message;

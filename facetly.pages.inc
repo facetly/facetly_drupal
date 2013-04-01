@@ -43,6 +43,7 @@
 		$filter['session'] = session_id();
 		$filter['ip'] = ip_address();
   		$filter['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+  		$filter['render'] = 'template';
   		
   		$searchtype = "html";
 		$var = facetly_search_result($query, $filter, $searchtype);
@@ -54,13 +55,12 @@
 
 	function facetly_autocomplete_search_page() {
 	    $matches = array();
-	    $query = $_GET['query'];
+	    $query  = $_GET['query'];
 	    
 	    $limit = 10;
 	    if (!empty($query)) {
 	        $suggestions = array();
 	        $filter = array();
-
 	        $facetly = facetly_api_init();
         	$var = $facetly->searchAutoComplete($query);
 	        if (!empty($var)) {

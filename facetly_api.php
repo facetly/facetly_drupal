@@ -99,12 +99,13 @@ class facetly_api
     
     function searchProduct($query, $filter, $searchtype)
     {
-        $baseurl = $this->baseurl;
+        $baseurl = (!empty($this->baseurl)) ? $this->baseurl : $filter['baseurl'];
         $key     = $this->key;
         $data    = array(
             "key" => $key,
-            "limit" => 3,
+            "limit" => 5,
             "searchtype" => $searchtype,
+            "render" => $searchtype,
             "baseurl" => $baseurl
         );
         
@@ -116,31 +117,12 @@ class facetly_api
         return json_decode($this->call($path, $data, 'GET'));
     }
     
-    function searchHtml($query, $filter)
-    {
-        $baseurl = $this->baseurl;
-        $key     = $this->key;
-        $data    = array(
-            "key" => $key,
-            "limit" => 3,
-            "baseurl" => $baseurl
-        );
-        
-        if (!empty($query)) {
-            $data['query'] = $query;
-        }
-        $data = array_merge($data, $filter);
-        $path = "search/html";
-        return $this->call($path, $data, 'GET');
-    }
-    
     function searchAutoComplete($query)
     {
         $key    = $this->key;
         $secret = $this->secret;
         $data   = array(
             "key" => $key,
-            //"secret" => $secret,
             "query" => $query
         );
         

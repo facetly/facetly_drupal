@@ -5,6 +5,7 @@
         $facetly_field_key = variable_get('facetly_field_key', array());
             
         $items = array();    
+        
         $languages = language_list(); 
         foreach ($facetly_field_key as $key => $value) {
             $deletekey = FALSE;
@@ -49,7 +50,7 @@
                 static $widget_module;
                 
                 list($value, $additional) = explode(":", $value);
-    
+                
                 if (empty($widget_type[$node->type][$value])) {
                     $widget_module[$node->type][$value] = db_result(db_query("SELECT widget_module FROM {content_node_field_instance} WHERE type_name='%s' AND field_name='%s'", $node->type, $value));
                 }
@@ -108,7 +109,7 @@
         $facetly->productInsert($items);                      
     }
 
-    function facetly_search_result($query, $filter, $searchtype) {
+    function facetly_search_result($query, $filter, $searchtype){
         static $var;
         if (empty($var)){
             $facetly = facetly_api_init();        
@@ -135,7 +136,8 @@
     }
 
 
-    function facetly_search_form($form_state, $vars = array('title' => TRUE)) {
+    function facetly_search_form($form_state, $vars = array('title' => TRUE))
+    {
         global $language;
         $query = "";
         if (!empty($_GET['query']))
@@ -201,7 +203,7 @@
         return $form;
     }
 
-    function facetly_faceted_search() {
+    function facetly_faceted_search(){
         $url = explode('?', $_SERVER['REQUEST_URI']);
         $get = array();   
         

@@ -1,8 +1,7 @@
-Drupal.behaviors.facetly = function() {
-  var facetly = Drupal.settings.facetly;
-  var baseurlfile=facetly.baseurl+""+facetly.file;
+jQuery(document).ready(function() {
+    var baseurlfile=facetly.baseurl+""+facetly.file;
     var isfacetlypage = false;
-  
+
   if (jQuery('#facetly_facet').length && jQuery('#facetly_result').length) {
     isfacetlypage = true;
   }
@@ -77,17 +76,19 @@ Drupal.behaviors.facetly = function() {
           jQuery('#facetly_facet').show();
           
         } 
+        jQuery('#loading').removeClass("loading");
         jQuery('#facetly_result').fadeTo("fast",1.0);
         //jQuery('html, body').animate({ scrollTop: jQuery('#facetly_result').offset().top }, "fast");
         if (fade) { 
           jQuery('html, body').animate({ scrollTop: 0 }, "fast");
         }
         jQuery(document).trigger("facetly_loaded");       
-    };	
+    };  
     
     var facetly_loading = function(data) {
       //jQuery('#facetly_result').html('<div class="facetly_loading">Loading Search Result .....</div>');
-      jQuery('#facetly_result').fadeTo("fast",0.5);
+      jQuery('#loading').addClass("loading");
+      jQuery('#facetly_result').fadeTo("fast",0.6);
     }     
 
     jQuery('#facetly_result .pager a, #facetly_facet a').live("click", function() {
@@ -128,6 +129,7 @@ Drupal.behaviors.facetly = function() {
              var newkey = decodeURIComponent(key);
              if (typeof event.parameters[key] == "string") {              
               params[newkey] = decodeURIComponent(event.parameters[key]).replace(/\+/g, ' ');
+
              } else {
               var values = [];
               var value_temp = event.parameters[key];
@@ -137,11 +139,14 @@ Drupal.behaviors.facetly = function() {
               params[newkey] = values;
              }
            }
+             //console.log(params);
            
            facetly_server = facetly.server;
            params["key"] = facetly.key;
            params["baseurl"] = baseurlfile;
-           params["searchtype"] = "html";
+           params["render"] = "template";
+           params["limit"] = facetly.limit;
+           
            
            var fade = true;   
            if (jQuery('#facetly_result').attr('attr-type') == 'form') {
@@ -154,14 +159,12 @@ Drupal.behaviors.facetly = function() {
              dataType: "jsonp",
              type: "GET",
              data : params,
-             success: function(data, textStatus, XMLHttpRequest) {		
+             success: function(data, textStatus, XMLHttpRequest) {    
               facetly_handler(data,fade);
               jQuery(document).trigger("facetly_loaded");
              }
            });
         }
-
     });
-    }
-}	
-
+    }  
+});
